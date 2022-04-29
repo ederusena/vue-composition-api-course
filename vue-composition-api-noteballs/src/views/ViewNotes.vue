@@ -32,7 +32,7 @@
   imports
 */
 
-  import { ref } from 'vue'
+  import { ref, onMounted } from 'vue'
   import Note from '@/components/Notes/Note.vue'
   import AddEditNote from '@/components/Notes/AddEditNote.vue'
   import { useStoreNotes } from '@/stores/storeNotes'
@@ -62,5 +62,13 @@
 */
 
   useWatchCharacters(newNote)
+
+/*
+  mounted
+*/
+
+  onMounted(() => {
+    storeNotes.firebaseInit()
+  })
 
 </script>
