@@ -64,6 +64,14 @@
 */
 
   import { ref, reactive, computed } from 'vue'
+  import { useStoreNotes } from '@/stores/storeNotes'
+
+
+/*
+  stores
+*/
+
+  const storeNotes = useStoreNotes()
 
 
 /*
@@ -102,10 +110,10 @@
     }
     else {
       if (register.value) {
-        console.log('register user')
+        storeNotes.firebaseRegister(credentials)
       }
       else {
-        console.log('login user')
+        storeNotes.firebaseLogin(credentials)
       }
     }
   }

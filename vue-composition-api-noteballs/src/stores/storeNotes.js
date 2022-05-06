@@ -4,7 +4,10 @@ import {
   query, orderBy, 
   deleteDoc, doc, setDoc, updateDoc
 } from 'firebase/firestore'
-import db from '@/js/firebase'
+import {
+  createUserWithEmailAndPassword, signOut
+} from 'firebase/auth'
+import { db, auth } from '@/js/firebase'
 
 const notesCollectionRef = collection(db, 'users', 'userId1', 'notes')
 const notesCollectionQuery = query(notesCollectionRef, orderBy('id', 'desc'))
@@ -61,6 +64,23 @@ export const useStoreNotes = defineStore('storeNotes', {
           newNotes.push({ ...doc.data(), id: doc.id })
         })
         this.notes = newNotes
+      })
+    },
+    firebaseRegister(credentials) {
+      createUserWithEmailAndPassword(auth, credentials.email, credentials.password).then(cred => {
+        console.log('cred.user: ', cred.user)
+      }).catch(error => {
+        console.log(error.message)
+      })
+    },
+    firebaseLogin(credentials) {
+      console.log('login: ', credentials)
+    },
+    firebaseLogout() {
+      signOut(auth).then(() => {
+        console.log('User signed out')
+      }).catch(error => {
+        console.log('error.message: ', error.message)
       })
     }
   },

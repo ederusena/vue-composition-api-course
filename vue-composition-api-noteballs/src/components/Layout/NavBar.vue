@@ -49,6 +49,12 @@
           >
             Stats
           </RouterLink>
+          <button
+            @click="storeNotes.firebaseLogout"
+            class="button is-small is-info mt-3 ml-3"
+          >
+            Log out
+          </button>
         </div>
       </div>
     </div>
@@ -62,12 +68,22 @@
 
   import { ref } from 'vue'
   import { onClickOutside } from '@vueuse/core'
+  import { useStoreNotes } from '@/stores/storeNotes'
+
+
+/*
+  stores
+*/
+
+  const storeNotes = useStoreNotes()
+
 
 /*
   mobile nav
 */
 
   const showMobileNav = ref(false)
+
 
 /*
   click outside to close
