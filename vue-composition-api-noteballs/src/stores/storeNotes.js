@@ -6,7 +6,7 @@ import {
 } from 'firebase/firestore'
 import db from '@/js/firebase'
 
-const notesCollectionRef = collection(db, 'notes')
+const notesCollectionRef = collection(db, 'users', 'userId1', 'notes')
 const notesCollectionQuery = query(notesCollectionRef, orderBy('id', 'desc'))
 
 export const useStoreNotes = defineStore('storeNotes', {
@@ -21,7 +21,8 @@ export const useStoreNotes = defineStore('storeNotes', {
         //   id: 'id2',
         //   content: 'This is a shorter note! Woo!'
         // }
-      ]
+      ],
+      loggedIn: true
     }
   },
   actions: {
@@ -36,19 +37,19 @@ export const useStoreNotes = defineStore('storeNotes', {
 
       // this.notes.unshift(note)
 
-      setDoc(doc(db, 'notes', note.id), {
+      setDoc(doc(notesCollectionRef, note.id), {
         id: note.id,
         content: note.content
       })
     },
     deleteNote(idToDelete) {
       // this.notes = this.notes.filter(note => note.id !== idToDelete )
-      deleteDoc(doc(db, 'notes', idToDelete))
+      deleteDoc(doc(notesCollectionRef, idToDelete))
     },
     updateNote(id, content) {
       // let index = this.notes.findIndex(note => note.id === id )
       // this.notes[index].content = content
-      updateDoc(doc(db, 'notes', id), {
+      updateDoc(doc(notesCollectionRef, id), {
         content
       })
     },
