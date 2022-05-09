@@ -71,7 +71,11 @@ export const useStoreNotes = defineStore('storeNotes', {
       onAuthStateChanged(auth, user => {
         console.log('user status changed: ', user)
         if (user) {
+          this.router.push('/')
           this.getNotes()
+        }
+        else {
+          this.router.push('/auth')
         }
       })
     },

@@ -50,7 +50,7 @@
             Stats
           </RouterLink>
           <button
-            @click="storeNotes.firebaseLogout"
+            @click="logout"
             class="button is-small is-info mt-3 ml-3"
           >
             Log out
@@ -97,6 +97,15 @@
   }, {
     ignore: [navbarBurgerRef]
   })
+
+/*
+  log out
+*/
+
+  const logout = () => {
+    storeNotes.firebaseLogout()
+    showMobileNav.value = false
+  }
 
 </script>
 
