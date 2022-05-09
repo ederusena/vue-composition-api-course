@@ -26,7 +26,7 @@ export const useStoreNotes = defineStore('storeNotes', {
         //   content: 'This is a shorter note! Woo!'
         // }
       ],
-      loggedIn: true
+      loggedIn: false
     }
   },
   actions: {
@@ -73,9 +73,11 @@ export const useStoreNotes = defineStore('storeNotes', {
         if (user) {
           this.router.push('/')
           this.getNotes()
+          this.loggedIn = true
         }
         else {
           this.router.replace('/auth')
+          this.loggedIn = false
         }
       })
     },
