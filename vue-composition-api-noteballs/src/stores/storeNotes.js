@@ -75,7 +75,7 @@ export const useStoreNotes = defineStore('storeNotes', {
           this.getNotes()
         }
         else {
-          this.router.push('/auth')
+          this.router.replace('/auth')
         }
       })
     },
