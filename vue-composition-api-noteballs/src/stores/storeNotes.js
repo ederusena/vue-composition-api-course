@@ -5,7 +5,7 @@ import {
   deleteDoc, doc, setDoc, updateDoc
 } from 'firebase/firestore'
 import {
-  createUserWithEmailAndPassword, signOut
+  createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword
 } from 'firebase/auth'
 import { db, auth } from '@/js/firebase'
 
@@ -74,7 +74,11 @@ export const useStoreNotes = defineStore('storeNotes', {
       })
     },
     firebaseLogin(credentials) {
-      console.log('login: ', credentials)
+      signInWithEmailAndPassword(auth, credentials.email, credentials.password).then(cred => {
+        console.log('cred.user: ', cred.user)
+      }).catch(error => {
+        console.log(error.message)
+      })
     },
     firebaseLogout() {
       signOut(auth).then(() => {
