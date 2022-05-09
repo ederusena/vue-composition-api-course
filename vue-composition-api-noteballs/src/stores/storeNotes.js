@@ -5,7 +5,8 @@ import {
   deleteDoc, doc, setDoc, updateDoc
 } from 'firebase/firestore'
 import {
-  createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword
+  createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword,
+  onAuthStateChanged
 } from 'firebase/auth'
 import { db, auth } from '@/js/firebase'
 
@@ -29,6 +30,15 @@ export const useStoreNotes = defineStore('storeNotes', {
     }
   },
   actions: {
+    getNotes() {
+      onSnapshot(notesCollectionQuery, snapshot => {
+        let newNotes = []
+        snapshot.docs.forEach(doc => {
+          newNotes.push({ ...doc.data(), id: doc.id })
+        })
+        this.notes = newNotes
+      })
+    },
     addNote(newNoteContent) {
       let currentDate = new Date().getTime(),
           id = currentDate.toString()
@@ -58,12 +68,11 @@ export const useStoreNotes = defineStore('storeNotes', {
     },
 
     firebaseInit() {
-      onSnapshot(notesCollectionQuery, snapshot => {
-        let newNotes = []
-        snapshot.docs.forEach(doc => {
-          newNotes.push({ ...doc.data(), id: doc.id })
-        })
-        this.notes = newNotes
+      onAuthStateChanged(auth, user => {
+        console.log('user status changed: ', user)
+        if (user) {
+          this.getNotes()
+        }
       })
     },
     firebaseRegister(credentials) {

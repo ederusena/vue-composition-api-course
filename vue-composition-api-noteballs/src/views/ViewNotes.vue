@@ -63,12 +63,4 @@
 
   useWatchCharacters(newNote)
 
-/*
-  mounted
-*/
-
-  onMounted(() => {
-    storeNotes.firebaseInit()
-  })
-
 </script>
