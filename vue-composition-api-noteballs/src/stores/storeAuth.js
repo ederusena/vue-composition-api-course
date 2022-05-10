@@ -5,6 +5,8 @@ import {
 } from 'firebase/auth'
 import { auth } from '@/js/firebase'
 
+import { useStoreNotes } from '@/stores/storeNotes'
+
 export const useStoreAuth = defineStore('storeAuth', {
   state: () => {
     return { 
@@ -24,6 +26,9 @@ export const useStoreAuth = defineStore('storeAuth', {
           this.userEmail = user.email
         }
         else {
+          const storeNotes = useStoreNotes()
+          storeNotes.stopGettingNotes()
+
           this.router.replace('/auth')
           this.notes = []
           this.loggedIn = false

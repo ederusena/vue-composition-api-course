@@ -10,6 +10,8 @@ import { useStoreAuth } from '@/stores/storeAuth'
 let notesCollectionRef = null
 let notesCollectionQuery = null
 
+let getNotesSnapshot = null
+
 export const useStoreNotes = defineStore('storeNotes', {
   state: () => {
     return { 
@@ -36,7 +38,8 @@ export const useStoreNotes = defineStore('storeNotes', {
     },
     getNotes() {
       this.loading = true
-      onSnapshot(notesCollectionQuery, snapshot => {
+      getNotesSnapshot = onSnapshot(notesCollectionQuery, snapshot => {
+        console.log('new snapshot')
         let newNotes = []
         snapshot.docs.forEach(doc => {
           newNotes.push({ ...doc.data(), id: doc.id })
@@ -44,6 +47,12 @@ export const useStoreNotes = defineStore('storeNotes', {
         this.notes = newNotes
         this.loading = false
       })
+    },
+    stopGettingNotes() {
+      console.log('stopGettingNotes')
+      if (getNotesSnapshot) {
+        getNotesSnapshot()
+      }
     },
     addNote(newNoteContent) {
       let currentDate = new Date().getTime(),
