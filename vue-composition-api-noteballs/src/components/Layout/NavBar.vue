@@ -50,6 +50,7 @@
             Stats
           </RouterLink>
           <button
+            v-if="storeNotes.loggedIn"
             @click="logout"
             class="button is-small is-info mt-3 ml-3"
           >
