@@ -22,7 +22,8 @@ export const useStoreNotes = defineStore('storeNotes', {
         //   id: 'id2',
         //   content: 'This is a shorter note! Woo!'
         // }
-      ]
+      ],
+      loading: false
     }
   },
   actions: {
@@ -34,12 +35,14 @@ export const useStoreNotes = defineStore('storeNotes', {
       this.getNotes()
     },
     getNotes() {
+      this.loading = true
       onSnapshot(notesCollectionQuery, snapshot => {
         let newNotes = []
         snapshot.docs.forEach(doc => {
           newNotes.push({ ...doc.data(), id: doc.id })
         })
         this.notes = newNotes
+        this.loading = false
       })
     },
     addNote(newNoteContent) {
