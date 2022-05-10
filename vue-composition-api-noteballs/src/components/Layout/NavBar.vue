@@ -32,6 +32,17 @@
         :class="{ 'is-active' : showMobileNav }"
         ref="navbarMenuRef"
       >
+        <div
+          v-if="storeAuth.loggedIn"
+          class="navbar-start"
+        >
+          <button
+            @click="logout"
+            class="button is-small is-info mt-3 ml-3"
+          >
+            Log out {{ storeAuth.userEmail }}
+          </button>
+        </div>
         <div class="navbar-end">
           <RouterLink
             @click="showMobileNav = false"
@@ -49,13 +60,6 @@
           >
             Stats
           </RouterLink>
-          <button
-            v-if="storeAuth.loggedIn"
-            @click="logout"
-            class="button is-small is-info mt-3 ml-3"
-          >
-            Log out
-          </button>
         </div>
       </div>
     </div>
