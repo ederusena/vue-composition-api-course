@@ -10,8 +10,8 @@ import {
 } from 'firebase/auth'
 import { db, auth } from '@/js/firebase'
 
-const notesCollectionRef = collection(db, 'users', 'userId1', 'notes')
-const notesCollectionQuery = query(notesCollectionRef, orderBy('id', 'desc'))
+let notesCollectionRef = null
+let notesCollectionQuery = null
 
 export const useStoreNotes = defineStore('storeNotes', {
   state: () => {
@@ -71,26 +71,32 @@ export const useStoreNotes = defineStore('storeNotes', {
       onAuthStateChanged(auth, user => {
         console.log('user status changed: ', user)
         if (user) {
+          this.firebaseInitRefs(user.uid)
           this.router.push('/')
           this.getNotes()
           this.loggedIn = true
         }
         else {
           this.router.replace('/auth')
+          this.notes = []
           this.loggedIn = false
         }
       })
     },
+    firebaseInitRefs(uid) {
+      notesCollectionRef = collection(db, 'users', uid, 'notes')
+      notesCollectionQuery = query(notesCollectionRef, orderBy('id', 'desc'))
+    },
     firebaseRegister(credentials) {
       createUserWithEmailAndPassword(auth, credentials.email, credentials.password).then(cred => {
-        console.log('cred.user: ', cred.user)
+        // console.log('cred.user: ', cred.user)
       }).catch(error => {
         console.log(error.message)
       })
     },
     firebaseLogin(credentials) {
       signInWithEmailAndPassword(auth, credentials.email, credentials.password).then(cred => {
-        console.log('cred.user: ', cred.user)
+        // console.log('cred.user: ', cred.user)
       }).catch(error => {
         console.log(error.message)
       })
