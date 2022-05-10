@@ -50,7 +50,7 @@
             Stats
           </RouterLink>
           <button
-            v-if="storeNotes.loggedIn"
+            v-if="storeAuth.loggedIn"
             @click="logout"
             class="button is-small is-info mt-3 ml-3"
           >
@@ -69,14 +69,14 @@
 
   import { ref } from 'vue'
   import { onClickOutside } from '@vueuse/core'
-  import { useStoreNotes } from '@/stores/storeNotes'
+  import { useStoreAuth } from '@/stores/storeAuth'
 
 
 /*
   stores
 */
 
-  const storeNotes = useStoreNotes()
+  const storeAuth = useStoreAuth()
 
 
 /*
@@ -104,7 +104,7 @@
 */
 
   const logout = () => {
-    storeNotes.firebaseLogout()
+    storeAuth.firebaseLogout()
     showMobileNav.value = false
   }
 

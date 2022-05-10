@@ -12,21 +12,21 @@
 */
 
   import { onMounted } from 'vue'
-  import { useStoreNotes } from '@/stores/storeNotes'
+  import { useStoreAuth } from '@/stores/storeAuth'
   import NavBar from '@/components/Layout/NavBar.vue'
 
 /*
   stores
 */
 
-  const storeNotes = useStoreNotes()
+  const storeAuth = useStoreAuth()
 
 /*
   mounted
 */
 
   onMounted(() => {
-    storeNotes.firebaseInit()
+    storeAuth.firebaseInit()
   })
   
 </script>

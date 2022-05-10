@@ -51,6 +51,15 @@
 
   const storeNotes = useStoreNotes()
 
+
+/*
+  get notes
+*/
+
+  onMounted(() => {
+    storeNotes.initNotes()
+  })
+
 /*
   notes
 */

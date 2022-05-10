@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { useStoreNotes } from '@/stores/storeNotes'
+import { useStoreAuth } from '@/stores/storeAuth'
 import ViewNotes from '@/views/ViewNotes.vue'
 import ViewEditNote from '@/views/ViewEditNote.vue'
 import ViewStats from '@/views/ViewStats.vue'
@@ -35,11 +35,11 @@ const router = createRouter({
 
 // navigation guards
 router.beforeEach(async (to, from, next) => {
-  const storeNotes = useStoreNotes()
-  if (!storeNotes.loggedIn && to.name !== 'auth') {
+  const storeAuth = useStoreAuth()
+  if (!storeAuth.loggedIn && to.name !== 'auth') {
     next('/auth')
   }
-  else if (storeNotes.loggedIn && to.name === 'auth') {
+  else if (storeAuth.loggedIn && to.name === 'auth') {
     next('/')
   }
   else {

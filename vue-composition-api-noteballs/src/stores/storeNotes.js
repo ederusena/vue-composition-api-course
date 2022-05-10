@@ -4,11 +4,8 @@ import {
   query, orderBy, 
   deleteDoc, doc, setDoc, updateDoc
 } from 'firebase/firestore'
-import {
-  createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword,
-  onAuthStateChanged
-} from 'firebase/auth'
-import { db, auth } from '@/js/firebase'
+import { db } from '@/js/firebase'
+import { useStoreAuth } from '@/stores/storeAuth'
 
 let notesCollectionRef = null
 let notesCollectionQuery = null
@@ -25,11 +22,17 @@ export const useStoreNotes = defineStore('storeNotes', {
         //   id: 'id2',
         //   content: 'This is a shorter note! Woo!'
         // }
-      ],
-      loggedIn: false
+      ]
     }
   },
   actions: {
+    initNotes() {
+      const storeAuth = useStoreAuth()
+
+      notesCollectionRef = collection(db, 'users', storeAuth.userId, 'notes')
+      notesCollectionQuery = query(notesCollectionRef, orderBy('id', 'desc'))
+      this.getNotes()
+    },
     getNotes() {
       onSnapshot(notesCollectionQuery, snapshot => {
         let newNotes = []
@@ -48,64 +51,17 @@ export const useStoreNotes = defineStore('storeNotes', {
         content: newNoteContent
       }
 
-      // this.notes.unshift(note)
-
       setDoc(doc(notesCollectionRef, note.id), {
         id: note.id,
         content: note.content
       })
     },
     deleteNote(idToDelete) {
-      // this.notes = this.notes.filter(note => note.id !== idToDelete )
       deleteDoc(doc(notesCollectionRef, idToDelete))
     },
     updateNote(id, content) {
-      // let index = this.notes.findIndex(note => note.id === id )
-      // this.notes[index].content = content
       updateDoc(doc(notesCollectionRef, id), {
         content
-      })
-    },
-
-    firebaseInit() {
-      onAuthStateChanged(auth, user => {
-        console.log('user status changed: ', user)
-        if (user) {
-          this.firebaseInitRefs(user.uid)
-          this.router.push('/')
-          this.getNotes()
-          this.loggedIn = true
-        }
-        else {
-          this.router.replace('/auth')
-          this.notes = []
-          this.loggedIn = false
-        }
-      })
-    },
-    firebaseInitRefs(uid) {
-      notesCollectionRef = collection(db, 'users', uid, 'notes')
-      notesCollectionQuery = query(notesCollectionRef, orderBy('id', 'desc'))
-    },
-    firebaseRegister(credentials) {
-      createUserWithEmailAndPassword(auth, credentials.email, credentials.password).then(cred => {
-        // console.log('cred.user: ', cred.user)
-      }).catch(error => {
-        console.log(error.message)
-      })
-    },
-    firebaseLogin(credentials) {
-      signInWithEmailAndPassword(auth, credentials.email, credentials.password).then(cred => {
-        // console.log('cred.user: ', cred.user)
-      }).catch(error => {
-        console.log(error.message)
-      })
-    },
-    firebaseLogout() {
-      signOut(auth).then(() => {
-        console.log('User signed out')
-      }).catch(error => {
-        console.log('error.message: ', error.message)
       })
     }
   },
