@@ -14,7 +14,7 @@
     </ul>
   </div>
 
-  <div class="container login-form">
+  <div class="container is-max-desktop login-form">
     <div class="card">
       <div class="card-content">
         <h1 class="title has-text-centered">
