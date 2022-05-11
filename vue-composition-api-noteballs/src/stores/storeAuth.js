@@ -30,7 +30,6 @@ export const useStoreAuth = defineStore('storeAuth', {
           storeNotes.stopGettingNotes()
 
           this.router.replace('/auth')
-          this.notes = []
           this.loggedIn = false
           this.userId = null
           this.userEmail = null

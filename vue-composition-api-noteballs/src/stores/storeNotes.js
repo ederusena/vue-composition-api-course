@@ -49,6 +49,7 @@ export const useStoreNotes = defineStore('storeNotes', {
     },
     stopGettingNotes() {
       if (getNotesSnapshot) {
+        this.notes = []
         getNotesSnapshot()
       }
     },
